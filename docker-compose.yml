@@ -1,12 +1,23 @@
 version: "3.2"
 services:
-  bortli-lb:
+  health-check-lb:
     build:
-      context: bortli
+      context: healthCheck
       dockerfile: Dockerfile
     volumes:
-      - ./bortli/nginx.conf:/etc/nginx/nginx.conf
-      - ./bortli/default.conf:/etc/nginx/conf.d/default.conf
+      - ./healthCheck/nginx.conf:/etc/nginx/nginx.conf
+      - ./healthCheck/default.conf:/etc/nginx/conf.d/default.conf
+      - ./healthCheck/html:/usr/share/nginx/html
+    ports:
+      - 8080:8080
+  brotli-lb:
+    build:
+      context: brotli
+      dockerfile: Dockerfile
+    volumes:
+      - ./brotli/nginx.conf:/etc/nginx/nginx.conf
+      - ./brotli/default.conf:/etc/nginx/conf.d/default.conf
+      - ./brotli/html:/usr/share/nginx/html
     ports:
       - 8080:8080
   logrotate-lb:
@@ -16,7 +27,7 @@ services:
     volumes:
       - ./logrotate/nginx.conf:/etc/nginx/nginx.conf
       - ./logrotate/default.conf:/etc/nginx/conf.d/default.conf
-      - ./logrotate/html:/usr/share/nginx/html  # 새로운 볼륨 추가
+      - ./logrotate/html:/usr/share/nginx/html
       - ./logrotate/log:/var/log/nginx
     ports:
       - 8080:8080
