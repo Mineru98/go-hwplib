@@ -1,0 +1,14 @@
+/var/log/nginx/access.log {
+    daily
+    size 100M
+    rotate 5
+    compress
+    delaycompress
+    missingok
+    notifempty
+    create 0640 www-data www-data
+    sharedscripts
+    postrotate
+        [ -f /run/nginx.pid ] && kill -USR1 `cat /run/nginx.pid`
+    endscript
+}

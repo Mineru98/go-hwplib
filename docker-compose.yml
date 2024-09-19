@@ -9,3 +9,14 @@ services:
       - ./bortli/default.conf:/etc/nginx/conf.d/default.conf
     ports:
       - 8080:8080
+  logrotate-lb:
+    build:
+      context: logrotate
+      dockerfile: Dockerfile
+    volumes:
+      - ./logrotate/nginx.conf:/etc/nginx/nginx.conf
+      - ./logrotate/default.conf:/etc/nginx/conf.d/default.conf
+      - ./logrotate/html:/usr/share/nginx/html  # 새로운 볼륨 추가
+      - ./logrotate/log:/var/log/nginx
+    ports:
+      - 8080:8080
